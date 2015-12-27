@@ -1,0 +1,15 @@
+Options +FollowSymlinks
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+</IfModule>
+
+  AuthType Basic
+  AuthName "Authentication Required"
+  AuthUserFile "/home/megaman/public_html/teddykamconvert/.htpasswdz"
+  Require valid-user
+
+#  Order allow,deny
+#  Allow from all

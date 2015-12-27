@@ -1,0 +1,1 @@
+<input <?php foreach ($data as $key=>$val)	echo $key.'="'.$val.'" ';?> />
