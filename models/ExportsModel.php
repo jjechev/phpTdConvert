@@ -7,6 +7,7 @@ class ExportsModel
 //        "PAKS",
         "Admiral",
  //       "TPG",
+        "TopTour",
     );
 
     private function __construct()

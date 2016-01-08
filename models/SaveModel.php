@@ -56,6 +56,16 @@ class SaveModel
             $this->createExelFile($filename);
         }
 
+        if ($this->type == 'TopTour') {
+            $topTour = new ExportTopTourModel($this->objPHPExcel, $this->data);
+            $viewdata = $topTour->createXls();
+
+            $this->autoSizeColumnWidth();
+
+            $filename = $time . "-" . $type . ".xlsx";
+            $this->createExelFile($filename);
+        }
+
 //        if ($this->type == 'TPG')
 //        {
 //            $filename = $time . "-" . $type . "-" . implode('-', $this->options['hotelsName']) . ".xml";
@@ -146,7 +156,6 @@ class SaveModel
 //        }
 //        $this->PAKSOptions['hotelName'] = $hotelName;
 //    }
-
 //    private function createTPGXML($filename)
 //    {
 //        $xmlArray = array();
