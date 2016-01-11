@@ -11,15 +11,12 @@ class ExportTopTourModel extends aExportTraitsModel
     private $selectedHotels;
     protected $worksheet;
     private $currnetPeriodData = array();
-//    private $periodOfValidityMap = array('per day' => 'per night', 'per stay' => 'once');
-//    private $persons = array('per adult', 'per child', 'per unit');
-//    private $includesAlsoMap = array("per child" => "per person", "per adult" => "per person", "per unit" => "per all");
 
-    public function __construct(&$objPHPExcel, &$data)
+    public function __construct(&$objPHPExcel, &$data, $options)
     {
         $this->worksheet = $objPHPExcel->getActiveSheet();
         $this->data = &$data;
-        $this->selectedHotels = InputData::getPost("hotelsNames");
+        $this->selectedHotels = $options['hotelsNames'];
     }
 
     /**
@@ -31,7 +28,6 @@ class ExportTopTourModel extends aExportTraitsModel
             if (in_array($hotelData['hotelName'], $this->selectedHotels)) {
                 $this->createHotel($hotelData);
             }
-            $this->incLine();
         }
     }
 
@@ -46,7 +42,7 @@ class ExportTopTourModel extends aExportTraitsModel
     }
 
     /**
-     * започва създаване на хотел
+     * създаване на хотел
      * 
      * @param type $hotelData
      */
@@ -58,21 +54,20 @@ class ExportTopTourModel extends aExportTraitsModel
 //        $this->createHotelMarkets($hotelData['markets'], "ALL MARKETS");
 
         foreach ($boards as $board) {
+            $this->incLine();
             $this->createBoard($board, $hotelData['periods']);
             $this->currnetPeriodData = $hotelData['periods'];
 //            $this->createBoardPriceFor($this->minimumStay($hotelData['optionsAndExtras']));
-            $this->incLine();
 
             foreach ($hotelData['rooms'] as $room) {
                 if ($room['board'] == $board) {
                     $this->createRoom($room);
-
-
-//                    $this->incLine();
                 }
             }
         }
-
+        
+        $this->incLine();
+        
 //        @$this->calculateHotelSupplementsFromCommunityTax($hotelData['optionsAndExtras']);
 //        @$this->createHotelSupplements($hotelData['optionsAndExtras']);
 //        @$this->createHotelExtras($hotelData['optionsAndExtras']);
@@ -92,7 +87,7 @@ class ExportTopTourModel extends aExportTraitsModel
     }
 
     /**
-     * записва името на стаята на текущия ред
+     * името на стаята на текущия ред
      * 
      * @param type $name
      */
@@ -103,28 +98,7 @@ class ExportTopTourModel extends aExportTraitsModel
         $this->createPeriods();
         $this->incLine();
     }
-//
-//    /**
-//     * Създава Price for за текущото настаняване
-//     */
-//    private function createBoardPriceFor($minimumStay)
-//    {
-//        $this->worksheet->setCellValue('A' . $this->line, "Price for {$minimumStay} - 99 nights");
-//        $this->setBackgroundColor($this->line, '33CCFF');
-//        $this->incLine();
-//    }
-//    
-//    /**
-//     * 
-//     * @param array $data
-//     * @return array
-//     */
-//    private function minimumStay($data)
-//    {
-//        $minimumStay = array_shift($data["MinimumStay"]);
-//        return $minimumStay;
-//    }
-//
+
     /**
      * 
      * @param array $data
@@ -132,9 +106,12 @@ class ExportTopTourModel extends aExportTraitsModel
     private function createRoomAccomodation(&$data)
     {
 
-        foreach ($data as $acomodationName => $acomodationData) {
-            $this->worksheet->setCellValue('A' . $this->line, $acomodationName);
-            $this->createRoomAccomodatioPeriod($acomodationData);
+        foreach ($data as $accomodationName => $accomodationData) {
+            if (stripos($accomodationName,"p.p. in") !==false){
+                continue;
+            }
+            $this->worksheet->setCellValue('A' . $this->line, $accomodationName);
+            $this->createRoomAccomodatioPeriod($accomodationData);
             $this->incLine();
         }
     }
@@ -188,6 +165,28 @@ class ExportTopTourModel extends aExportTraitsModel
         $this->incLine();
     }
 
+//
+//    /**
+//     * Създава Price for за текущото настаняване
+//     */
+//    private function createBoardPriceFor($minimumStay)
+//    {
+//        $this->worksheet->setCellValue('A' . $this->line, "Price for {$minimumStay} - 99 nights");
+//        $this->setBackgroundColor($this->line, '33CCFF');
+//        $this->incLine();
+//    }
+//    
+//    /**
+//     * 
+//     * @param array $data
+//     * @return array
+//     */
+//    private function minimumStay($data)
+//    {
+//        $minimumStay = array_shift($data["MinimumStay"]);
+//        return $minimumStay;
+//    }
+//
 //
 //    /**
 //     * 
@@ -386,6 +385,7 @@ class ExportTopTourModel extends aExportTraitsModel
 
         return "{$date[0]}.{$this->TraitsYearShort}-{$date[1]}.{$this->TraitsYearShort}";
     }
+
 //
 //    /**
 //     * 

@@ -14,8 +14,9 @@ class ExportAdmiralModel extends aExportTraitsModel
     private $persons = array('per adult', 'per child', 'per unit');
     private $includesAlsoMap = array("per child" => "per person", "per adult" => "per person", "per unit" => "per all");
 
-    public function __construct(&$objPHPExcel, &$data)
+    public function __construct(&$objPHPExcel, &$data, $options)
     {
+        $this->selectedHotels = $options['hotelsNames'];
         $this->worksheet = $objPHPExcel->getActiveSheet();
         $this->data = &$data;
         $this->selectedHotels = InputData::getPost("hotelsNames");

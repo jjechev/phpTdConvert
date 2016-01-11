@@ -40,14 +40,14 @@ class SaveModel
         $this->options = $options;
         $time = time();
 
-        if ($this->type == 'PAKS') {
-            $this->createPaksXls();
-            $filename = $time . "-" . $type . "-" . $this->PAKSOptions['hotelName'] . ".xlsx";
-            $this->createExelFile($filename);
-        }
+//        if ($this->type == 'PAKS') {
+//            $this->createPaksXls();
+//            $filename = $time . "-" . $type . "-" . $this->PAKSOptions['hotelName'] . ".xlsx";
+//            $this->createExelFile($filename);
+//        }
 
         if ($this->type == 'Admiral') {
-            $admiral = new ExportAdmiralModel($this->objPHPExcel, $this->data);
+            $admiral = new ExportAdmiralModel($this->objPHPExcel, $this->data, $this->options);
             $viewdata = $admiral->createXls();
 
             $this->autoSizeColumnWidth();
@@ -57,13 +57,13 @@ class SaveModel
         }
 
         if ($this->type == 'TopTour') {
-            $topTour = new ExportTopTourModel($this->objPHPExcel, $this->data);
+            $topTour = new ExportTopTourModel($this->objPHPExcel, $this->data, $this->options);
             $viewdata = $topTour->createXls();
 
             $this->autoSizeColumnWidth();
 
             $filename = $time . "-" . $type . ".xlsx";
-            $this->createExelFile($filename);
+             $this->createExelFile($filename);
         }
 
 //        if ($this->type == 'TPG')
