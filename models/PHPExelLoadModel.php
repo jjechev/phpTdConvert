@@ -75,6 +75,8 @@ class PHPExelLoadModel extends aExportTraitsModel
         $this->elements['sheetDimension']['X'] = $this->objPHPExcel->setActiveSheetIndex(0)->getHighestColumn();
         $this->elements['sheetDimension']['Y'] = $this->objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
 
+        $this->data['region'] = $this->objPHPExcel->getActiveSheet()->getTitle();
+        
         $this->getHotels();
     }
 
@@ -486,8 +488,8 @@ class PHPExelLoadModel extends aExportTraitsModel
         $count = count($roomsMap);
 
         for ($i = 0; $i < $count - 1; $i++) {
-            $roomName = $this->objPHPExcel->getActiveSheet()->getCell('A' . $roomsMap[$i])->getValue();
-            $roomName = Common::normalizeArrayKey($roomName);
+            $fullRoomName = $this->objPHPExcel->getActiveSheet()->getCell('A' . $roomsMap[$i])->getValue();
+            $roomName = Common::normalizeArrayKey($fullRoomName);
             $tmp = explode("-", $roomName);
             $roomName = trim($tmp[0]);
             $periodsMaps = $this->getPeriodsMap($roomsMap[$i]);
@@ -498,6 +500,7 @@ class PHPExelLoadModel extends aExportTraitsModel
 
             $this->data['hotels'][$hotelName]['rooms'][$i]['board'] = $board;
             $this->data['hotels'][$hotelName]['rooms'][$i]['name'] = $roomName;
+            $this->data['hotels'][$hotelName]['rooms'][$i]['fullRoomName'] = $fullRoomName;
             foreach ($periodsMaps as $period) {
                 $periodName = $this->objPHPExcel->getActiveSheet()->getCell($period . $roomsMap[$i])->getCalculatedValue();
                 $periodName = Common::normalizeArrayKey($periodName);

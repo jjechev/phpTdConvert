@@ -5,8 +5,8 @@ abstract class aExportTraitsModel
 
     protected $boardType = array("BO", "BB", "HB", "HB+", "FB", "FB+", "AIG", "ALL", "ALL 24h", "UAI", "UAI+", "AIP", "AIL");
     protected $exelXColums = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'Y', 'W', 'X', 'Y', 'Z');
-    protected $TraitsYear = "2016";
-    protected $TraitsYearShort = "16";
+    protected $TraitsYear = "2018";
+    protected $TraitsYearShort = "18";
 
     protected static function getDistinctBoards(&$rooms)
     {

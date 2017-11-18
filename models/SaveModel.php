@@ -65,6 +65,16 @@ class SaveModel
             $filename = $time . "-" . $type . ".xlsx";
              $this->createExelFile($filename);
         }
+        
+        if ($this->type == 'Sejur') {
+            $topTour = new ExportSejurModel($this->objPHPExcel, $this->data, $this->options);
+            $viewdata = $topTour->createXls();
+
+            $this->autoSizeColumnWidth();
+
+            $filename = $time . "-" . $type . ".xlsx";
+            $this->createExelFile($filename);
+        }
 
 //        if ($this->type == 'TPG')
 //        {

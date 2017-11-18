@@ -1,5 +1,9 @@
 <?php
 
+require_once ("../config/Routes.php");
+require_once ("../config/Config.php");
+require_once ("../core/Settings.php");
+
 spl_autoload_register('Autoload::loader');
 
 class Autoload
